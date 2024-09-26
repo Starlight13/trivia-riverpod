@@ -22,7 +22,14 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo ${{ secrets.BASE_URL }} >> .env
+
       - name: Generate files
+        # env:
+        #   BASE_URL: ${{ secrets.BASE_URL }}
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Analyze project source
