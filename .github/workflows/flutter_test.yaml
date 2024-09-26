@@ -29,8 +29,6 @@ jobs:
           cat .env
 
       - name: Generate files
-        # env:
-        #   BASE_URL: ${{ secrets.BASE_URL }}
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Analyze project source
