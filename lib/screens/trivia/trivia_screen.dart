@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/providers/trivia_provider.dart';
+import 'package:trivia_riverpod/screens/trivia/widgets/answer_button.dart';
 
 class TriviaScreen extends ConsumerWidget {
   final TriviaConfig config;
@@ -83,7 +84,7 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
                 ),
               ),
               ...question.shuffledAnswers.map((answer) {
-                return _AnswerButton(
+                return AnswerButton(
                   isSelected: question.givenAnswer == answer,
                   caption: answer,
                   isCorrect: question.correctAnswer == answer,
@@ -100,9 +101,7 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
                       onPressed:
                           index == 0 ? null : () => animateToPage(index - 1),
                       label: const Text('Previous'),
-                      icon: const Icon(
-                        Icons.chevron_left,
-                      ),
+                      icon: const Icon(Icons.chevron_left),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -114,11 +113,7 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
                           )
                         : OutlinedButton.icon(
                             onPressed: () => animateToPage(index + 1),
-                            icon: isLast
-                                ? null
-                                : const Icon(
-                                    Icons.chevron_right,
-                                  ),
+                            icon: const Icon(Icons.chevron_right),
                             label: const Text('Next'),
                             iconAlignment: IconAlignment.end,
                           ),
@@ -129,49 +124,6 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
           ),
         );
       },
-    );
-  }
-}
-
-class _AnswerButton extends StatelessWidget {
-  const _AnswerButton({
-    required this.isSelected,
-    required this.caption,
-    this.onTap,
-    required this.isCorrect,
-  });
-
-  final bool isSelected;
-  final bool isCorrect;
-  final String caption;
-  final Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: isSelected
-            ? WidgetStatePropertyAll(
-                isCorrect ? Colors.green : Colors.red,
-              )
-            : isCorrect
-                ? WidgetStatePropertyAll(
-                    Colors.green.withOpacity(0.3),
-                  )
-                : null,
-        foregroundColor: isSelected
-            ? const WidgetStatePropertyAll(
-                Colors.white,
-              )
-            : null,
-      ),
-      onPressed: onTap,
-      child: Text(
-        caption,
-        style: TextStyle(
-          color: isSelected ? Colors.white : null,
-        ),
-      ),
     );
   }
 }
