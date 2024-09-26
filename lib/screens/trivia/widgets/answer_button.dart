@@ -22,7 +22,7 @@ class AnswerButton extends StatelessWidget {
             ? WidgetStatePropertyAll(
                 isCorrect ? Colors.green : Colors.red,
               )
-            : isCorrect
+            : isCorrect && onTap == null
                 ? WidgetStatePropertyAll(
                     Colors.green.withOpacity(0.3),
                   )

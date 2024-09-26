@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
@@ -31,10 +30,25 @@ class CurrentTrivia extends _$CurrentTrivia {
 }
 
 @riverpod
-Future<TriviaQuestion?> currentQuestion(
-  CurrentQuestionRef ref,
+int correctlyAnsweredQuestionsCount(
+  CorrectlyAnsweredQuestionsCountRef ref,
   TriviaConfig config,
-) async {
-  final questions = await ref.watch(currentTriviaProvider(config).future);
-  return questions.firstWhereOrNull((q) => q.givenAnswer == null);
+) {
+  final questions = ref.watch(currentTriviaProvider(config));
+  return switch (questions) {
+    AsyncData(:final value) => value.where((q) => q.isCorrect).length,
+    _ => 0,
+  };
+}
+
+@riverpod
+int questionsCount(
+  QuestionsCountRef ref,
+  TriviaConfig config,
+) {
+  final questions = ref.watch(currentTriviaProvider(config));
+  return switch (questions) {
+    AsyncData(:final value) => value.length,
+    _ => 0,
+  };
 }
