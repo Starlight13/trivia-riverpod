@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/providers/trivia_provider.dart';
+import 'package:trivia_riverpod/screens/results/results_screen.dart';
 import 'package:trivia_riverpod/screens/trivia/widgets/answer_button.dart';
 
 class TriviaScreen extends ConsumerWidget {
@@ -25,6 +26,11 @@ class TriviaScreen extends ConsumerWidget {
                 onGiveAnswer: (q, a) => ref
                     .read(currentTriviaProvider(config).notifier)
                     .answerQuestion(q, a),
+                onSeeResults: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ResultsScreen(config: config),
+                  ),
+                ),
               ),
             AsyncError(:final error) => Text(error.toString()),
             _ => const Center(
@@ -38,12 +44,14 @@ class TriviaScreen extends ConsumerWidget {
 }
 
 class _TriviaPageView extends StatefulWidget {
+  final Function() onSeeResults;
   final IList<TriviaQuestion> questions;
   final Function(TriviaQuestion question, String answer) onGiveAnswer;
 
   const _TriviaPageView({
     required this.questions,
     required this.onGiveAnswer,
+    required this.onSeeResults,
   });
 
   @override
@@ -107,9 +115,9 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: isLast
-                        ? const OutlinedButton(
-                            onPressed: null,
-                            child: Text('Results'),
+                        ? OutlinedButton(
+                            onPressed: widget.onSeeResults,
+                            child: const Text('Results'),
                           )
                         : OutlinedButton.icon(
                             onPressed: () => animateToPage(index + 1),
