@@ -63,7 +63,7 @@ class ResultsScreen extends ConsumerWidget {
                           child: CircularProgressIndicator(),
                         ),
                       ),
-                  }
+                  },
                 ],
               ),
             ),
