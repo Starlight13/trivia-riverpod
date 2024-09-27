@@ -1,0 +1,38 @@
+name: Flutter test
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.3
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo ${{ secrets.ENV }} >> .env
+          cat .env
+
+      - name: Generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze project source
+        run: dart analyze
+
+      - name: Run tests
+        run: flutter test
