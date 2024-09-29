@@ -1,20 +1,17 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/providers/trivia_provider.dart';
-import 'package:trivia_riverpod/screens/results/results_screen.dart';
 import 'package:trivia_riverpod/screens/trivia/widgets/answer_button.dart';
 
 class TriviaScreen extends ConsumerWidget {
-  final TriviaConfig config;
-
-  const TriviaScreen({super.key, required this.config});
+  const TriviaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(currentTriviaProvider(config));
+    final questions = ref.watch(currentTriviaProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Trivia')),
       body: SafeArea(
@@ -24,13 +21,9 @@ class TriviaScreen extends ConsumerWidget {
             AsyncData(:final value) => _TriviaPageView(
                 questions: value,
                 onGiveAnswer: (q, a) => ref
-                    .read(currentTriviaProvider(config).notifier)
+                    .read(currentTriviaProvider.notifier)
                     .answerQuestion(q, a),
-                onSeeResults: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => ResultsScreen(config: config),
-                  ),
-                ),
+                onSeeResults: () => ResultsRoute().go(context),
               ),
             AsyncError(:final error) => Text(error.toString()),
             _ => const Center(

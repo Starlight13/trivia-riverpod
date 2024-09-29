@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:trivia_riverpod/env/env.dart';
 import 'package:trivia_riverpod/models/question_category/question_category.dart';
-import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
+import 'package:trivia_riverpod/models/trivia_config/trivia_config_model.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
 
 class NetworkService {
@@ -14,7 +14,7 @@ class NetworkService {
   }
 
   Future<List<TriviaQuestion>> getTrivia({
-    required TriviaConfig config,
+    required TriviaConfigModel config,
   }) async {
     final response = await dio.get(
       '/api.php',

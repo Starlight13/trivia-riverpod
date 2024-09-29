@@ -1,19 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
 
-part 'trivia_config.freezed.dart';
-part 'trivia_config.g.dart';
+part 'trivia_config_model.freezed.dart';
+part 'trivia_config_model.g.dart';
 
 @freezed
-class TriviaConfig with _$TriviaConfig {
+class TriviaConfigModel with _$TriviaConfigModel {
   @JsonSerializable(includeIfNull: false)
-  factory TriviaConfig({
+  factory TriviaConfigModel({
     @Default(10) int amount,
     required int? category,
     required QuestionDifficulty? difficulty,
     required QuestionType? type,
-  }) = _TriviaConfig;
+  }) = _TriviaConfigModel;
 
-  factory TriviaConfig.fromJson(Map<String, dynamic> json) =>
-      _$TriviaConfigFromJson(json);
+  factory TriviaConfigModel.fromJson(Map<String, dynamic> json) =>
+      _$TriviaConfigModelFromJson(json);
 }

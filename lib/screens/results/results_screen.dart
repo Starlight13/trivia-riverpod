@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
+import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/providers/trivia_provider.dart';
 
 class ResultsScreen extends ConsumerWidget {
-  final TriviaConfig config;
-  const ResultsScreen({
-    super.key,
-    required this.config,
-  });
+  const ResultsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final correct = ref.watch(correctlyAnsweredQuestionsCountProvider(config));
-    final total = ref.watch(questionsCountProvider(config));
-    final questions = ref.watch(currentTriviaProvider(config));
+    final correct = ref.watch(correctlyAnsweredQuestionsCountProvider);
+    final total = ref.watch(questionsCountProvider);
+    final questions = ref.watch(currentTriviaProvider);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -25,6 +21,9 @@ class ResultsScreen extends ConsumerWidget {
               child: CustomScrollView(
                 slivers: [
                   SliverAppBar(
+                    leading: BackButton(
+                      onPressed: () => TriviaConfigurationRoute().go(context),
+                    ),
                     backgroundColor: theme.scaffoldBackgroundColor,
                     scrolledUnderElevation: 0,
                     elevation: 0,
@@ -70,7 +69,7 @@ class ResultsScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: OutlinedButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => TriviaConfigurationRoute().go(context),
                 child: const Text('Back'),
               ),
             ),

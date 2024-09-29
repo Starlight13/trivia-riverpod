@@ -9,7 +9,8 @@ import 'package:dio/dio.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:trivia_riverpod/models/question_category/question_category.dart'
     as _i5;
-import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart' as _i7;
+import 'package:trivia_riverpod/models/trivia_config/trivia_config_model.dart'
+    as _i7;
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart'
     as _i6;
 import 'package:trivia_riverpod/service/network_service.dart' as _i3;
@@ -66,7 +67,7 @@ class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
 
   @override
   _i4.Future<List<_i6.TriviaQuestion>> getTrivia(
-          {required _i7.TriviaConfig? config}) =>
+          {required _i7.TriviaConfigModel? config}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getTrivia,
