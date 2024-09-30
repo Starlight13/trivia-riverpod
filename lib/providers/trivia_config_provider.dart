@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trivia_riverpod/models/trivia_config/trivia_config_model.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
-import 'package:trivia_riverpod/providers/category_question_count_provider.dart';
 
 part 'trivia_config_provider.g.dart';
 
@@ -33,27 +32,4 @@ int? selectedCategory(SelectedCategoryRef ref) {
 @riverpod
 QuestionDifficulty? selectedDifficulty(SelectedDifficultyRef ref) {
   return ref.watch(triviaConfigProvider).difficulty;
-}
-
-@riverpod
-FutureOr<int> maxQuestionCount(MaxQuestionCountRef ref) {
-  final selectedCategory = ref.watch(selectedCategoryProvider);
-  final selectedDifficulty = ref.watch(selectedDifficultyProvider);
-  return selectedCategory == null
-      ? 50
-      : ref.watch(
-          categoryDifficultyQuestionCountProvider(
-            selectedCategory,
-            selectedDifficulty,
-          ).future,
-        );
-}
-
-@riverpod
-int syncMaxQuestionCount(SyncMaxQuestionCountRef ref) {
-  final maxQuestionCount = ref.watch(maxQuestionCountProvider);
-  return switch (maxQuestionCount) {
-    AsyncData(:final value) => value,
-    _ => 50,
-  };
 }

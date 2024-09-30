@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
 
@@ -17,18 +15,13 @@ class CategoryQuestionCountModel with _$CategoryQuestionCountModel {
 
   CategoryQuestionCountModel._();
 
-  int getCountForDifficulty(QuestionDifficulty? difficulty) => min(
-        (switch (difficulty) {
-                      QuestionDifficulty.easy => totalEasyQuestionCount,
-                      QuestionDifficulty.medium => totalMediumQuestionCount,
-                      QuestionDifficulty.hard => totalHardQuestionCount,
-                      null => totalQuestionCount,
-                    } /
-                    5)
-                .floor() *
-            5,
-        50,
-      );
+  int getCountForDifficulty(QuestionDifficulty? difficulty) =>
+      switch (difficulty) {
+        QuestionDifficulty.easy => totalEasyQuestionCount,
+        QuestionDifficulty.medium => totalMediumQuestionCount,
+        QuestionDifficulty.hard => totalHardQuestionCount,
+        null => totalQuestionCount,
+      };
 
   factory CategoryQuestionCountModel.fromJson(Map<String, dynamic> json) =>
       _$CategoryQuestionCountModelFromJson(json);

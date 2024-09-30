@@ -4,6 +4,7 @@ import 'package:trivia_riverpod/extensions/string_extension.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/providers/categories_provider.dart';
+import 'package:trivia_riverpod/providers/max_question_count_provider.dart';
 import 'package:trivia_riverpod/providers/selected_question_count_provider.dart';
 import 'package:trivia_riverpod/providers/trivia_config_provider.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:trivia_riverpod/providers/trivia_config_provider.dart';
+import 'package:trivia_riverpod/providers/max_question_count_provider.dart';
 
 part 'selected_question_count_provider.g.dart';
 
