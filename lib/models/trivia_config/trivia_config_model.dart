@@ -8,7 +8,6 @@ part 'trivia_config_model.g.dart';
 class TriviaConfigModel with _$TriviaConfigModel {
   @JsonSerializable(includeIfNull: false)
   factory TriviaConfigModel({
-    @Default(10) int amount,
     required int? category,
     required QuestionDifficulty? difficulty,
     required QuestionType? type,

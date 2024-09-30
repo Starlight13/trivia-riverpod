@@ -13,7 +13,31 @@ class TriviaScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final questions = ref.watch(currentTriviaProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Trivia')),
+      appBar: AppBar(
+        title: const Text('Trivia'),
+        leading: BackButton(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (innerContext) => AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              title: const Text('Are you sure you want to exit?'),
+              content: const Text(
+                'All your current progress will be lost',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => goRouter.pop(),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => TriviaConfigurationRoute().go(context),
+                  child: const Text('Exit'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -23,7 +47,27 @@ class TriviaScreen extends ConsumerWidget {
                 onGiveAnswer: (q, a) => ref
                     .read(currentTriviaProvider.notifier)
                     .answerQuestion(q, a),
-                onSeeResults: () => ResultsRoute().go(context),
+                onSeeResults: () => showDialog(
+                  context: context,
+                  builder: (innerContext) => AlertDialog(
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    title:
+                        const Text('Are you sure you want to end the trivia?'),
+                    content: const Text(
+                      'Some questions were left unanswered.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => goRouter.pop(),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => ResultsRoute().go(context),
+                        child: const Text('End Trivia'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             AsyncError(:final error) => Text(error.toString()),
             _ => const Center(

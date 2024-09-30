@@ -1,6 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/providers/selected_question_count_provider.dart';
 import 'package:trivia_riverpod/providers/trivia_config_provider.dart';
 import 'package:trivia_riverpod/service/network_service.dart';
 import 'package:trivia_riverpod/service/service_locator.dart';
@@ -12,8 +13,12 @@ class CurrentTrivia extends _$CurrentTrivia {
   @override
   FutureOr<IList<TriviaQuestion>> build() async {
     final config = ref.watch(triviaConfigProvider);
+    final numberOfQuestions = ref.watch(selectedQuestionCountProvider);
     final triviaQuestions =
-        await serviceLocator.get<NetworkService>().getTrivia(config: config);
+        await serviceLocator.get<NetworkService>().getTrivia(
+              config: config,
+              numberOfQuestions: numberOfQuestions,
+            );
 
     return triviaQuestions.lock;
   }
