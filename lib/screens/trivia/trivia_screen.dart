@@ -1,22 +1,43 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
 import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/providers/trivia_provider.dart';
-import 'package:trivia_riverpod/screens/results/results_screen.dart';
 import 'package:trivia_riverpod/screens/trivia/widgets/answer_button.dart';
 
 class TriviaScreen extends ConsumerWidget {
-  final TriviaConfig config;
-
-  const TriviaScreen({super.key, required this.config});
+  const TriviaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(currentTriviaProvider(config));
+    final questions = ref.watch(currentTriviaProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Trivia')),
+      appBar: AppBar(
+        title: const Text('Trivia'),
+        leading: BackButton(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (innerContext) => AlertDialog(
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              title: const Text('Are you sure you want to exit?'),
+              content: const Text(
+                'All your current progress will be lost',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => goRouter.pop(),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => TriviaConfigurationRoute().go(context),
+                  child: const Text('Exit'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -24,11 +45,27 @@ class TriviaScreen extends ConsumerWidget {
             AsyncData(:final value) => _TriviaPageView(
                 questions: value,
                 onGiveAnswer: (q, a) => ref
-                    .read(currentTriviaProvider(config).notifier)
+                    .read(currentTriviaProvider.notifier)
                     .answerQuestion(q, a),
-                onSeeResults: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => ResultsScreen(config: config),
+                onSeeResults: () => showDialog(
+                  context: context,
+                  builder: (innerContext) => AlertDialog(
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    title:
+                        const Text('Are you sure you want to end the trivia?'),
+                    content: const Text(
+                      'Some questions were left unanswered.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => goRouter.pop(),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => ResultsRoute().go(context),
+                        child: const Text('End Trivia'),
+                      ),
+                    ],
                   ),
                 ),
               ),

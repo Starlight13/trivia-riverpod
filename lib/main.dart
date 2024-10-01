@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trivia_riverpod/models/trivia_config/trivia_config.dart';
+import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/providers/provider_observer.dart';
-import 'package:trivia_riverpod/screens/trivia/trivia_screen.dart';
 import 'package:trivia_riverpod/service/service_locator.dart';
 
 void main() {
@@ -23,18 +22,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: goRouter,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
+            .copyWith(outline: Colors.deepPurple.shade900),
         useMaterial3: true,
-      ),
-      home: TriviaScreen(
-        config: TriviaConfig(
-          amount: 10,
-          category: null,
-          difficulty: null,
-          type: null,
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
       ),
     );
