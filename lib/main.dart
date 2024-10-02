@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/providers/provider_observer.dart';
-import 'package:trivia_riverpod/service/service_locator.dart';
 
 void main() {
-  setupServiceLocator();
   runApp(
     ProviderScope(
       observers: [
