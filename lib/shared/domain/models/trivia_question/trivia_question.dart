@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:trivia_riverpod/models/uri_string_converter.dart';
+import 'package:trivia_riverpod/shared/utils/uri_string_converter.dart';
 
 part 'trivia_question.freezed.dart';
 part 'trivia_question.g.dart';
@@ -16,24 +14,13 @@ class TriviaQuestion with _$TriviaQuestion {
     required String category,
     required String question,
     required String correctAnswer,
-    required List<String> incorrectAnswers,
-    String? givenAnswer,
+    required List<String> answers,
   }) = _TriviaQuestion;
-
-  List<String> get shuffledAnswers => switch (type) {
-        QuestionType.multiple => [...incorrectAnswers, correctAnswer]
-          ..shuffle(Random(correctAnswer.hashCode)),
-        QuestionType.boolean => ['True', 'False'],
-      };
 
   factory TriviaQuestion.fromJson(Map<String, dynamic> json) =>
       _$TriviaQuestionFromJson(json);
 
   TriviaQuestion._();
-
-  bool get isAnswered => givenAnswer != null;
-
-  bool get isCorrect => givenAnswer == correctAnswer;
 }
 
 enum QuestionType {

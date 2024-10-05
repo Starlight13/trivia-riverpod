@@ -1,17 +1,17 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_model.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_notifier.dart';
+import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
-import 'package:trivia_riverpod/providers/trivia_provider.dart';
-import 'package:trivia_riverpod/screens/trivia/widgets/answer_button.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/screens/widgets/answer_button.dart';
 
 class TriviaScreen extends ConsumerWidget {
   const TriviaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(currentTriviaProvider);
+    final questions = ref.watch(currentTriviaNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trivia'),
@@ -43,10 +43,10 @@ class TriviaScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: switch (questions) {
             AsyncData(:final value) => _TriviaPageView(
-                questions: value,
+                trivia: value,
                 onGiveAnswer: (q, a) => ref
-                    .read(currentTriviaProvider.notifier)
-                    .answerQuestion(q, a),
+                    .read(currentTriviaNotifierProvider)
+                    .recordResponse(q, a),
                 onSeeResults: () => showDialog(
                   context: context,
                   builder: (innerContext) => AlertDialog(
@@ -82,11 +82,11 @@ class TriviaScreen extends ConsumerWidget {
 
 class _TriviaPageView extends StatefulWidget {
   final Function() onSeeResults;
-  final IList<TriviaQuestion> questions;
+  final TriviaModel trivia;
   final Function(TriviaQuestion question, String answer) onGiveAnswer;
 
   const _TriviaPageView({
-    required this.questions,
+    required this.trivia,
     required this.onGiveAnswer,
     required this.onSeeResults,
   });
@@ -108,12 +108,15 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final trivia = widget.trivia;
+    final questionCount = trivia.questionCount;
     return PageView.builder(
       controller: _pageController,
-      itemCount: widget.questions.length,
+      itemCount: questionCount,
       itemBuilder: (context, index) {
-        final question = widget.questions[index];
-        final isLast = index == widget.questions.length - 1;
+        final questionAnswer =
+            widget.trivia.questionAnswerMap.entries.elementAt(index);
+        final isLast = index == questionCount - 1;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
@@ -123,19 +126,19 @@ class _TriviaPageViewState extends State<_TriviaPageView> {
                 child: Center(
                   child: Text(
                     textAlign: TextAlign.center,
-                    question.question,
+                    questionAnswer.key.question,
                     style: const TextStyle(fontSize: 24),
                   ),
                 ),
               ),
-              ...question.shuffledAnswers.map((answer) {
+              ...questionAnswer.key.answers.map((answer) {
                 return AnswerButton(
-                  isSelected: question.givenAnswer == answer,
+                  isSelected: questionAnswer.value == answer,
                   caption: answer,
-                  isCorrect: question.correctAnswer == answer,
-                  onTap: question.isAnswered
+                  isCorrect: questionAnswer.key.correctAnswer == answer,
+                  onTap: trivia.getIsQuestionAnswered(questionAnswer.key)
                       ? null
-                      : () => widget.onGiveAnswer(question, answer),
+                      : () => widget.onGiveAnswer(questionAnswer.key, answer),
                 );
               }),
               const SizedBox(height: 16),

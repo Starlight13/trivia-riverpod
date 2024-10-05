@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 
 part 'trivia_config_model.freezed.dart';
 part 'trivia_config_model.g.dart';

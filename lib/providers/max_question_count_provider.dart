@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trivia_riverpod/extensions/int_extension.dart';
 import 'package:trivia_riverpod/providers/category_question_count_provider.dart';
-import 'package:trivia_riverpod/providers/trivia_config_provider.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_config_notifier.dart';
 
 part 'max_question_count_provider.g.dart';
 
 @riverpod
 FutureOr<int> maxQuestionCount(MaxQuestionCountRef ref) async {
-  final triviaConfig = ref.watch(triviaConfigProvider);
+  final triviaConfig = ref.watch(triviaConfigNotifierProvider);
 
   final categoryId = triviaConfig.category;
   if (categoryId == null) return 50;

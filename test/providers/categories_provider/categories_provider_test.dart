@@ -3,9 +3,9 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trivia_riverpod/models/question_category/question_category.dart';
-import 'package:trivia_riverpod/providers/categories_provider.dart';
-import 'package:trivia_riverpod/providers/dio_provider.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/question_category_model.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/question_categories_provider.dart';
+import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
 
 import '../../util.dart';
 import 'categories_provider_test.mocks.dart';
@@ -15,8 +15,8 @@ import 'categories_provider_test.mocks.dart';
 ])
 void main() {
   final categories = [
-    const QuestionCategory(id: 1, name: 'category1'),
-    const QuestionCategory(id: 2, name: 'category2'),
+    const QuestionCategoryModel(id: 1, name: 'category1'),
+    const QuestionCategoryModel(id: 2, name: 'category2'),
   ].lock;
 
   test(
@@ -35,7 +35,7 @@ void main() {
         ),
       );
 
-      final provider = await container.read(categoriesProvider.future);
+      final provider = await container.read(questionCategoriesProvider.future);
 
       expect(provider.lock, categories);
     },
@@ -52,7 +52,10 @@ void main() {
         Exception('An error occurred'),
       );
 
-      expectLater(container.read(categoriesProvider.future), throwsException);
+      expectLater(
+        container.read(questionCategoriesProvider.future),
+        throwsException,
+      );
     },
   );
 }

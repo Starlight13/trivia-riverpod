@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trivia_riverpod/providers/max_question_count_provider.dart';
 
-part 'selected_question_count_provider.g.dart';
+part 'selected_question_count_notifier.g.dart';
 
 @riverpod
-class SelectedQuestionCount extends _$SelectedQuestionCount {
+class SelectedQuestionCountNotifier extends _$SelectedQuestionCountNotifier {
   @override
   int build() {
     ref.listen(

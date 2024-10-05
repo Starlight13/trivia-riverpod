@@ -1,11 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:trivia_riverpod/models/trivia_config/trivia_config_model.dart';
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_config_model.dart';
+import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 
-part 'trivia_config_provider.g.dart';
+part 'trivia_config_notifier.g.dart';
 
 @riverpod
-class TriviaConfig extends _$TriviaConfig {
+class TriviaConfigNotifier extends _$TriviaConfigNotifier {
   @override
   TriviaConfigModel build() {
     return TriviaConfigModel(category: null, difficulty: null, type: null);
@@ -26,10 +26,10 @@ class TriviaConfig extends _$TriviaConfig {
 
 @riverpod
 int? selectedCategory(SelectedCategoryRef ref) {
-  return ref.watch(triviaConfigProvider).category;
+  return ref.watch(triviaConfigNotifierProvider).category;
 }
 
 @riverpod
 QuestionDifficulty? selectedDifficulty(SelectedDifficultyRef ref) {
-  return ref.watch(triviaConfigProvider).difficulty;
+  return ref.watch(triviaConfigNotifierProvider).difficulty;
 }

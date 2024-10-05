@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trivia_riverpod/screens/results/results_screen.dart';
-import 'package:trivia_riverpod/screens/trivia/trivia_screen.dart';
-import 'package:trivia_riverpod/screens/trivia_configuration/trivia_configuration_screen.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/screens/trivia_screen.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/screens/trivia_configuration_screen.dart';
 
 part 'routes.g.dart';
 

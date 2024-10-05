@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
-import 'package:trivia_riverpod/providers/provider_observer.dart';
+import 'package:trivia_riverpod/shared/utils/provider_observer.dart';
 
 void main() {
   runApp(

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trivia_riverpod/models/category_question_count/category_question_count_model.dart';
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
-import 'package:trivia_riverpod/providers/dio_provider.dart';
+import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
 
 part 'category_question_count_provider.g.dart';
 

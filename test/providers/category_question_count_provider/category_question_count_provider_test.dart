@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trivia_riverpod/models/category_question_count/category_question_count_model.dart';
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/providers/category_question_count_provider.dart';
-import 'package:trivia_riverpod/providers/dio_provider.dart';
+import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
 
 import '../../util.dart';
 import 'category_question_count_provider_test.mocks.dart';
