@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/features/trivia/domain/models/trivia_model.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/selected_question_count_notifier.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_config_notifier.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_notifier.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
 
@@ -9,7 +11,9 @@ class ResultsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final trivia = ref.watch(currentTriviaNotifierProvider);
+    final triviaConfig = ref.watch(triviaConfigNotifierProvider);
+    final amount = ref.watch(selectedQuestionCountNotifierProvider);
+    final trivia = ref.watch(triviaNotifierProvider(amount, triviaConfig));
 
     return Scaffold(
       body: SafeArea(
@@ -70,27 +74,23 @@ class _ResultsScreen extends StatelessWidget {
             floating: true,
             pinned: true,
           ),
-          switch (questions) {
-            AsyncData(:final value) => SliverList.builder(
-                itemCount: value.length,
-                itemBuilder: (context, index) {
-                  final question = value[index];
-                  return ListTile(
-                    title: Text(question.question),
-                    subtitle: Text(question.givenAnswer ?? ''),
-                    trailing: Icon(
-                      question.isCorrect ? Icons.check : Icons.close,
-                      color: question.isCorrect ? Colors.green : Colors.red,
-                    ),
-                  );
-                },
-              ),
-            _ => const SliverFillRemaining(
-                child: Center(
-                  child: CircularProgressIndicator(),
+          SliverList.builder(
+            itemCount: questions.length,
+            itemBuilder: (context, index) {
+              final question = questions[index];
+              final givenAnswer = triviaModel.getGivenAnswer(question);
+              final isCorrect =
+                  triviaModel.getIsQuestionCorrectlyAnswered(question);
+              return ListTile(
+                title: Text(question.question),
+                subtitle: Text(givenAnswer ?? ''),
+                trailing: Icon(
+                  isCorrect ? Icons.check : Icons.close,
+                  color: isCorrect ? Colors.green : Colors.red,
                 ),
-              ),
-          },
+              );
+            },
+          ),
         ],
       ),
     );

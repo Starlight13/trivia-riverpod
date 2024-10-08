@@ -11,7 +11,11 @@ class TriviaQuestionMapper {
       type: dto.type,
       difficulty: dto.difficulty,
       correctAnswer: dto.correctAnswer,
-      answers: [dto.correctAnswer, ...dto.incorrectAnswers]..shuffle(),
+      answers: switch (dto.type) {
+        QuestionType.multiple => [dto.correctAnswer, ...dto.incorrectAnswers]
+          ..shuffle(),
+        QuestionType.boolean => ['True', 'False'],
+      },
     );
   }
 }

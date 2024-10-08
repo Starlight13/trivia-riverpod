@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_questions_data_source.dart';
-import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_questions_remote_data_source.dart';
+import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_questions/trivia_questions_data_source.dart';
+import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_questions/trivia_questions_remote_data_source.dart';
 import 'package:trivia_riverpod/features/trivia/data/repositories/trivia_repository.dart';
 import 'package:trivia_riverpod/features/trivia/domain/repositories/trivia_repository.dart';
 import 'package:trivia_riverpod/features/trivia/domain/use_cases/get_trivia_use_case.dart';

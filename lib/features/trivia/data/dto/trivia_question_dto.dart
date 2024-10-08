@@ -1,11 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/shared/utils/uri_string_converter.dart';
 
 part 'trivia_question_dto.freezed.dart';
 part 'trivia_question_dto.g.dart';
 
 @freezed
 class TriviaQuestionDto with _$TriviaQuestionDto {
+  @UriStringConverter()
   factory TriviaQuestionDto({
     required String category,
     required QuestionType type,

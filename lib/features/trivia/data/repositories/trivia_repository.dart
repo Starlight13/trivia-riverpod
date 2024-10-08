@@ -1,4 +1,4 @@
-import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_questions_data_source.dart';
+import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_questions/trivia_questions_data_source.dart';
 import 'package:trivia_riverpod/features/trivia/data/mappers/trivia_question_mapper.dart';
 import 'package:trivia_riverpod/features/trivia/domain/repositories/trivia_repository.dart';
 import 'package:trivia_riverpod/features/trivia/domain/models/trivia_config_model.dart';

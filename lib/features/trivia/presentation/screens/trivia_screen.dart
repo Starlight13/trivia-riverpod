@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/features/trivia/domain/models/trivia_model.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/selected_question_count_notifier.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_config_notifier.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_notifier.dart';
 import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
@@ -11,7 +13,9 @@ class TriviaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(currentTriviaNotifierProvider);
+    final triviaConfig = ref.watch(triviaConfigNotifierProvider);
+    final amount = ref.watch(selectedQuestionCountNotifierProvider);
+    final trivia = ref.watch(triviaNotifierProvider(amount, triviaConfig));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trivia'),
@@ -41,33 +45,35 @@ class TriviaScreen extends ConsumerWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: switch (questions) {
+          child: switch (trivia) {
             AsyncData(:final value) => _TriviaPageView(
                 trivia: value,
                 onGiveAnswer: (q, a) => ref
-                    .read(currentTriviaNotifierProvider)
+                    .read(triviaNotifierProvider(amount, triviaConfig).notifier)
                     .recordResponse(q, a),
-                onSeeResults: () => showDialog(
-                  context: context,
-                  builder: (innerContext) => AlertDialog(
-                    actionsAlignment: MainAxisAlignment.spaceEvenly,
-                    title:
-                        const Text('Are you sure you want to end the trivia?'),
-                    content: const Text(
-                      'Some questions were left unanswered.',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => goRouter.pop(),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () => ResultsRoute().go(context),
-                        child: const Text('End Trivia'),
-                      ),
-                    ],
-                  ),
-                ),
+                onSeeResults: trivia.value.areAllQuestionsAnswered
+                    ? () => ResultsRoute().go(context)
+                    : () => showDialog(
+                          context: context,
+                          builder: (innerContext) => AlertDialog(
+                            actionsAlignment: MainAxisAlignment.spaceEvenly,
+                            title: const Text(
+                                'Are you sure you want to end the trivia?'),
+                            content: const Text(
+                              'Some questions were left unanswered.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => goRouter.pop(),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => ResultsRoute().go(context),
+                                child: const Text('End Trivia'),
+                              ),
+                            ],
+                          ),
+                        ),
               ),
             AsyncError(:final error) => Text(error.toString()),
             _ => const Center(

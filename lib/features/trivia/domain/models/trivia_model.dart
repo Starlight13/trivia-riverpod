@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 
 part 'trivia_model.freezed.dart';
-part 'trivia_model.g.dart';
 
 @freezed
 class TriviaModel with _$TriviaModel {
@@ -22,12 +21,17 @@ class TriviaModel with _$TriviaModel {
     return givenAnswer != null && givenAnswer == q.correctAnswer;
   }
 
+  String? getGivenAnswer(TriviaQuestion q) {
+    final String? givenAnswer = questionAnswerMap[q];
+    return givenAnswer;
+  }
+
   int get questionCount => questionAnswerMap.length;
 
   int get correctAnswerCount => questionAnswerMap.entries
       .where((entry) => entry.value == entry.key.correctAnswer)
       .length;
 
-  factory TriviaModel.fromJson(Map<String, dynamic> json) =>
-      _$TriviaModelFromJson(json);
+  bool get areAllQuestionsAnswered =>
+      questionAnswerMap.values.every((element) => element != null);
 }

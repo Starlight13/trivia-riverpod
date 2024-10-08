@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/extensions/string_extension.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/category_question_count_providers.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/question_categories_provider.dart';
 import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
-import 'package:trivia_riverpod/providers/max_question_count_provider.dart';
+// import 'package:trivia_riverpod/providers/max_question_count_provider.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/selected_question_count_notifier.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_config_notifier.dart';
 
@@ -17,7 +18,12 @@ class TriviaConfigurationScreen extends ConsumerWidget {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final selectedDifficulty = ref.watch(selectedDifficultyProvider);
     final numberOfQuestions = ref.watch(selectedQuestionCountNotifierProvider);
-    final maxNumberOfQuestions = ref.watch(syncMaxQuestionCountProvider);
+    final maxNumberOfQuestions = ref.watch(
+      maxQuestionCountProvider(
+        categoryId: selectedCategory,
+        difficulty: selectedDifficulty,
+      ),
+    );
     return Scaffold(
       appBar: AppBar(title: const Text('Trivia Configuration')),
       body: SafeArea(
@@ -36,6 +42,7 @@ class TriviaConfigurationScreen extends ConsumerWidget {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       DropdownButtonFormField<int>(
+                        isExpanded: true,
                         value: selectedCategory,
                         items: [
                           const DropdownMenuItem(
@@ -47,7 +54,10 @@ class TriviaConfigurationScreen extends ConsumerWidget {
                               (category) {
                                 return DropdownMenuItem(
                                   value: category.id,
-                                  child: Text(category.name),
+                                  child: Text(
+                                    category.name,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 );
                               },
                             ),

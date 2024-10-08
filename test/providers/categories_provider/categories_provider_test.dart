@@ -5,13 +5,14 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trivia_riverpod/features/trivia/domain/models/question_category_model.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/question_categories_provider.dart';
-import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
+import 'package:trivia_riverpod/shared/data/remote/network_service.dart';
+import 'package:trivia_riverpod/shared/domain/providers/network_service_provider.dart';
 
 import '../../util.dart';
 import 'categories_provider_test.mocks.dart';
 
 @GenerateMocks([
-  Dio,
+  NetworkService,
 ])
 void main() {
   final categories = [
@@ -22,11 +23,13 @@ void main() {
   test(
     'Categories provider',
     () async {
-      final dioMock = MockDio();
+      final networkServiceMock = MockNetworkService();
       final container = createContainer(
-        overrides: [dioClientProvider.overrideWithValue(dioMock)],
+        overrides: [
+          networkServiceProvider.overrideWithValue(networkServiceMock),
+        ],
       );
-      when(dioMock.get('/api_category.php')).thenAnswer(
+      when(networkServiceMock.get('/api_category.php')).thenAnswer(
         (_) async => Response(
           data: {
             'trivia_categories': categories.map((c) => c.toJson()).toList(),
@@ -44,11 +47,13 @@ void main() {
   test(
     'Categories provider - error thrown',
     () async {
-      final dioMock = MockDio();
+      final networkServiceMock = MockNetworkService();
       final container = createContainer(
-        overrides: [dioClientProvider.overrideWithValue(dioMock)],
+        overrides: [
+          networkServiceProvider.overrideWithValue(networkServiceMock),
+        ],
       );
-      when(dioMock.get('/api_category.php')).thenThrow(
+      when(networkServiceMock.get('/api_category.php')).thenThrow(
         Exception('An error occurred'),
       );
 

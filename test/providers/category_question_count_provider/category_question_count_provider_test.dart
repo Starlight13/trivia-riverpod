@@ -2,9 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trivia_riverpod/models/category_question_count/category_question_count_model.dart';
+import 'package:trivia_riverpod/features/trivia/data/mappers/category_question_count_mapper.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/category_question_count_model.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/category_question_count_providers.dart';
 import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
-import 'package:trivia_riverpod/providers/category_question_count_provider.dart';
 import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
 
 import '../../util.dart';
@@ -31,7 +32,8 @@ void main() {
     ).thenAnswer(
       (_) async => Response(
         data: {
-          'category_question_count': categoryCount.toJson(),
+          'category_question_count':
+              CategoryQuestionCountMapper.fromModel(categoryCount).toJson(),
         },
         requestOptions: RequestOptions(),
       ),
@@ -55,28 +57,39 @@ void main() {
     );
 
     await expectLater(
-      container.read(categoryDifficultyQuestionCountProvider(1, null).future),
+      container.read(
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: null,
+        ).future,
+      ),
       completion(categoryCount.totalQuestionCount),
     );
     await expectLater(
       container.read(
-        categoryDifficultyQuestionCountProvider(1, QuestionDifficulty.easy)
-            .future,
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: QuestionDifficulty.easy,
+        ).future,
       ),
       completion(categoryCount.totalEasyQuestionCount),
     );
     await expectLater(
       container.read(
-        categoryDifficultyQuestionCountProvider(1, QuestionDifficulty.medium)
-            .future,
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: QuestionDifficulty.medium,
+        ).future,
       ),
       completion(categoryCount.totalMediumQuestionCount),
     );
 
     await expectLater(
       container.read(
-        categoryDifficultyQuestionCountProvider(1, QuestionDifficulty.hard)
-            .future,
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: QuestionDifficulty.hard,
+        ).future,
       ),
       completion(categoryCount.totalHardQuestionCount),
     );
