@@ -3,19 +3,11 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:dio/dio.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:trivia_riverpod/models/category_question_count/category_question_count_model.dart'
-    as _i3;
-import 'package:trivia_riverpod/models/question_category/question_category.dart'
-    as _i6;
-import 'package:trivia_riverpod/models/trivia_config/trivia_config_model.dart'
-    as _i8;
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart'
-    as _i7;
-import 'package:trivia_riverpod/service/network_service.dart' as _i4;
+import 'package:trivia_riverpod/shared/data/remote/network_service.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -30,19 +22,8 @@ import 'package:trivia_riverpod/service/network_service.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeDio_0 extends _i1.SmartFake implements _i2.Dio {
-  _FakeDio_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeCategoryQuestionCountModel_1 extends _i1.SmartFake
-    implements _i3.CategoryQuestionCountModel {
-  _FakeCategoryQuestionCountModel_1(
+class _FakeResponse_0<T> extends _i1.SmartFake implements _i2.Response<T> {
+  _FakeResponse_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -54,63 +35,30 @@ class _FakeCategoryQuestionCountModel_1 extends _i1.SmartFake
 /// A class which mocks [NetworkService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkService extends _i1.Mock implements _i4.NetworkService {
+class MockNetworkService extends _i1.Mock implements _i3.NetworkService {
   MockNetworkService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Dio get dio => (super.noSuchMethod(
-        Invocation.getter(#dio),
-        returnValue: _FakeDio_0(
-          this,
-          Invocation.getter(#dio),
-        ),
-      ) as _i2.Dio);
-
-  @override
-  _i5.Future<List<_i6.QuestionCategory>> getCategories() => (super.noSuchMethod(
-        Invocation.method(
-          #getCategories,
-          [],
-        ),
-        returnValue: _i5.Future<List<_i6.QuestionCategory>>.value(
-            <_i6.QuestionCategory>[]),
-      ) as _i5.Future<List<_i6.QuestionCategory>>);
-
-  @override
-  _i5.Future<_i3.CategoryQuestionCountModel> getCategoryQuestionCount(
-          int? categoryId) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getCategoryQuestionCount,
-          [categoryId],
-        ),
-        returnValue: _i5.Future<_i3.CategoryQuestionCountModel>.value(
-            _FakeCategoryQuestionCountModel_1(
-          this,
-          Invocation.method(
-            #getCategoryQuestionCount,
-            [categoryId],
-          ),
-        )),
-      ) as _i5.Future<_i3.CategoryQuestionCountModel>);
-
-  @override
-  _i5.Future<List<_i7.TriviaQuestion>> getTrivia({
-    required _i8.TriviaConfigModel? config,
-    int? numberOfQuestions = 10,
+  _i4.Future<_i2.Response<dynamic>> get(
+    String? endpoint, {
+    Map<String, dynamic>? queryParameters,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getTrivia,
-          [],
-          {
-            #config: config,
-            #numberOfQuestions: numberOfQuestions,
-          },
+          #get,
+          [endpoint],
+          {#queryParameters: queryParameters},
         ),
         returnValue:
-            _i5.Future<List<_i7.TriviaQuestion>>.value(<_i7.TriviaQuestion>[]),
-      ) as _i5.Future<List<_i7.TriviaQuestion>>);
+            _i4.Future<_i2.Response<dynamic>>.value(_FakeResponse_0<dynamic>(
+          this,
+          Invocation.method(
+            #get,
+            [endpoint],
+            {#queryParameters: queryParameters},
+          ),
+        )),
+      ) as _i4.Future<_i2.Response<dynamic>>);
 }

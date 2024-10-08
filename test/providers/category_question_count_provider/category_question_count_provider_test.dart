@@ -1,20 +1,20 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trivia_riverpod/models/category_question_count/category_question_count_model.dart';
-import 'package:trivia_riverpod/models/trivia_question/trivia_question.dart';
-import 'package:trivia_riverpod/providers/category_question_count_provider.dart';
-import 'package:trivia_riverpod/service/network_service.dart';
+import 'package:trivia_riverpod/features/trivia/data/mappers/category_question_count_mapper.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/category_question_count_model.dart';
+import 'package:trivia_riverpod/features/trivia/presentation/providers/category_question_count_providers.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
+import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
 
 import '../../util.dart';
 import 'category_question_count_provider_test.mocks.dart';
 
 @GenerateMocks([
-  NetworkService,
+  Dio,
 ])
 void main() {
-  final MockNetworkService networkService = MockNetworkService();
   final categoryCount = CategoryQuestionCountModel(
     totalQuestionCount: 40,
     totalEasyQuestionCount: 11,
@@ -22,13 +22,27 @@ void main() {
     totalHardQuestionCount: 17,
   );
 
-  setUpAll(() {
-    GetIt.instance.registerSingleton<NetworkService>(networkService);
-  });
   test('Category question count', () async {
-    when(networkService.getCategoryQuestionCount(1))
-        .thenAnswer((_) async => categoryCount);
-    final container = createContainer();
+    final dioMock = MockDio();
+    when(
+      dioMock.get(
+        '/api_count.php',
+        queryParameters: {'category': 1},
+      ),
+    ).thenAnswer(
+      (_) async => Response(
+        data: {
+          'category_question_count':
+              CategoryQuestionCountMapper.fromModel(categoryCount).toJson(),
+        },
+        requestOptions: RequestOptions(),
+      ),
+    );
+    final container = createContainer(
+      overrides: [
+        dioClientProvider.overrideWithValue(dioMock),
+      ],
+    );
     final provider =
         await container.read(categoryQuestionCountProvider(1).future);
 
@@ -43,28 +57,39 @@ void main() {
     );
 
     await expectLater(
-      container.read(categoryDifficultyQuestionCountProvider(1, null).future),
+      container.read(
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: null,
+        ).future,
+      ),
       completion(categoryCount.totalQuestionCount),
     );
     await expectLater(
       container.read(
-        categoryDifficultyQuestionCountProvider(1, QuestionDifficulty.easy)
-            .future,
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: QuestionDifficulty.easy,
+        ).future,
       ),
       completion(categoryCount.totalEasyQuestionCount),
     );
     await expectLater(
       container.read(
-        categoryDifficultyQuestionCountProvider(1, QuestionDifficulty.medium)
-            .future,
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: QuestionDifficulty.medium,
+        ).future,
       ),
       completion(categoryCount.totalMediumQuestionCount),
     );
 
     await expectLater(
       container.read(
-        categoryDifficultyQuestionCountProvider(1, QuestionDifficulty.hard)
-            .future,
+        categoryQuestionCountForDifficultyProvider(
+          categoryId: 1,
+          difficulty: QuestionDifficulty.hard,
+        ).future,
       ),
       completion(categoryCount.totalHardQuestionCount),
     );
