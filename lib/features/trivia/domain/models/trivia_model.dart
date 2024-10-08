@@ -1,27 +1,28 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
 
 part 'trivia_model.freezed.dart';
 
 @freezed
 class TriviaModel with _$TriviaModel {
   factory TriviaModel({
-    required IMap<TriviaQuestion, String?> questionAnswerMap,
+    required IMap<TriviaQuestionModel, String?> questionAnswerMap,
   }) = _TriviaModel;
 
   TriviaModel._();
 
-  IList<TriviaQuestion> get questions => questionAnswerMap.keys.toIList();
+  IList<TriviaQuestionModel> get questions => questionAnswerMap.keys.toIList();
 
-  bool getIsQuestionAnswered(TriviaQuestion q) => questionAnswerMap[q] != null;
+  bool getIsQuestionAnswered(TriviaQuestionModel q) =>
+      questionAnswerMap[q] != null;
 
-  bool getIsQuestionCorrectlyAnswered(TriviaQuestion q) {
+  bool getIsQuestionCorrectlyAnswered(TriviaQuestionModel q) {
     final String? givenAnswer = questionAnswerMap[q];
     return givenAnswer != null && givenAnswer == q.correctAnswer;
   }
 
-  String? getGivenAnswer(TriviaQuestion q) {
+  String? getGivenAnswer(TriviaQuestionModel q) {
     final String? givenAnswer = questionAnswerMap[q];
     return givenAnswer;
   }

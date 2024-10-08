@@ -1,20 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'trivia_question.freezed.dart';
+part 'trivia_question_model.freezed.dart';
 
 @freezed
-class TriviaQuestion with _$TriviaQuestion {
-  factory TriviaQuestion({
+class TriviaQuestionModel with _$TriviaQuestionModel {
+  factory TriviaQuestionModel({
     required QuestionType type,
     required QuestionDifficulty difficulty,
     required String category,
     required String question,
     required String correctAnswer,
     required List<String> answers,
-  }) = _TriviaQuestion;
+  }) = _TriviaQuestionModel;
 
-  TriviaQuestion._();
+  TriviaQuestionModel._();
 }
 
 enum QuestionType {

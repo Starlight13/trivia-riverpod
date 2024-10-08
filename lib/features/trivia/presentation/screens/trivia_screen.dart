@@ -4,7 +4,7 @@ import 'package:trivia_riverpod/features/trivia/domain/models/trivia_model.dart'
 import 'package:trivia_riverpod/features/trivia/presentation/providers/selected_question_count_notifier.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_config_notifier.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/trivia_notifier.dart';
-import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/screens/widgets/answer_button.dart';
 
@@ -58,7 +58,8 @@ class TriviaScreen extends ConsumerWidget {
                           builder: (innerContext) => AlertDialog(
                             actionsAlignment: MainAxisAlignment.spaceEvenly,
                             title: const Text(
-                                'Are you sure you want to end the trivia?'),
+                              'Are you sure you want to end the trivia?',
+                            ),
                             content: const Text(
                               'Some questions were left unanswered.',
                             ),
@@ -89,7 +90,7 @@ class TriviaScreen extends ConsumerWidget {
 class _TriviaPageView extends StatefulWidget {
   final Function() onSeeResults;
   final TriviaModel trivia;
-  final Function(TriviaQuestion question, String answer) onGiveAnswer;
+  final Function(TriviaQuestionModel question, String answer) onGiveAnswer;
 
   const _TriviaPageView({
     required this.trivia,

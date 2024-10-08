@@ -2,7 +2,7 @@ import 'package:trivia_riverpod/features/trivia/data/data_source/trivia_question
 import 'package:trivia_riverpod/features/trivia/data/mappers/trivia_question_mapper.dart';
 import 'package:trivia_riverpod/features/trivia/domain/repositories/trivia_repository.dart';
 import 'package:trivia_riverpod/features/trivia/domain/models/trivia_config_model.dart';
-import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
 
 class TriviaRepositoryImpl implements TriviaRepository {
   final TriviaQuestionsDataSource triviaDataSource;
@@ -10,7 +10,7 @@ class TriviaRepositoryImpl implements TriviaRepository {
   TriviaRepositoryImpl({required this.triviaDataSource});
 
   @override
-  Future<List<TriviaQuestion>> getTrivia({
+  Future<List<TriviaQuestionModel>> getTrivia({
     required int amount,
     required TriviaConfigModel config,
   }) async {

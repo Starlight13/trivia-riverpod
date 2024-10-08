@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia_riverpod/extensions/string_extension.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/category_question_count_providers.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/question_categories_provider.dart';
-import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
 import 'package:trivia_riverpod/navigation/routes.dart';
 // import 'package:trivia_riverpod/providers/max_question_count_provider.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/selected_question_count_notifier.dart';

@@ -1,11 +1,11 @@
 import 'package:trivia_riverpod/features/trivia/data/dto/trivia_question_dto.dart';
-import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
 
 class TriviaQuestionMapper {
   TriviaQuestionMapper._();
 
-  static TriviaQuestion toModel(TriviaQuestionDto dto) {
-    return TriviaQuestion(
+  static TriviaQuestionModel toModel(TriviaQuestionDto dto) {
+    return TriviaQuestionModel(
       question: dto.question,
       category: dto.category,
       type: dto.type,

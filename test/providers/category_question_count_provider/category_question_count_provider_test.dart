@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:trivia_riverpod/features/trivia/data/mappers/category_question_count_mapper.dart';
 import 'package:trivia_riverpod/features/trivia/domain/models/category_question_count_model.dart';
 import 'package:trivia_riverpod/features/trivia/presentation/providers/category_question_count_providers.dart';
-import 'package:trivia_riverpod/shared/domain/models/trivia_question/trivia_question.dart';
+import 'package:trivia_riverpod/features/trivia/domain/models/trivia_question_model.dart';
 import 'package:trivia_riverpod/shared/domain/providers/dio_provider.dart';
 
 import '../../util.dart';
